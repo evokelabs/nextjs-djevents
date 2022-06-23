@@ -1,11 +1,9 @@
-import type { NextPage } from 'next'
-import styles from '../styles/Home.module.css'
+import Layout from '../components/Layout'
 
-const Home: NextPage = () => {
+export default function HomePage() {
   return (
-    <div className={styles.container}>
-      </div>
+    <Layout>
+      <h1>Home</h1>
+    </Layout>
   )
 }
-
-export default Home
