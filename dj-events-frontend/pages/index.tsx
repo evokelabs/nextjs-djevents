@@ -3,7 +3,7 @@ import Layout from '@/components/Layout'
 import EventItem from '@/components/EventItem'
 import { API_URL } from '@/config/index'
 
-export default function HomePage({ events }: { events: Array<any> }) {
+export default function HomePage({ events }: { events: any }) {
   return (
     <Layout>
       <h1>Upcoming Events</h1>
@@ -21,11 +21,14 @@ export default function HomePage({ events }: { events: Array<any> }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/events`)
-  const events = await res.json()
+  const res = await fetch(
+    `${API_URL}/api/events?populate=image&sort=date:asc&pagination[limit]=3`
+  )
+  const json = await res.json()
+  const events = json.data
 
   return {
-    props: { events: events.slice(0, 3) },
+    props: { events },
     revalidate: 1
   }
 }
