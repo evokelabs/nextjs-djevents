@@ -1,3 +1,6 @@
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import Layout from '@/components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -5,19 +8,32 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 import { FaPencilAlt, FaTimes } from 'react-icons/fa'
 import { API_URL } from '@/config/index'
 import styles from '@/styles/Event.module.css'
+import { useRouter } from 'next/router'
 
 export default function EventPage({ evt }) {
-  // const { attributes } = evt
-  const deleteEvent = () => {
-    console.log('delete')
-  }
+  const router = useRouter()
   const { attributes } = evt
+  const deleteEvent = async e => {
+    if (confirm('Are you sure?')) {
+      const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
+        method: 'DELETE'
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        toast.error(data.message)
+      } else {
+        router.push('/events')
+      }
+    }
+  }
 
   return (
     <Layout>
       <div className={styles.event}>
         <div className={styles.controls}>
-          <Link href={`/events/edit/${attributes.id}`}>
+          <Link href={`/events/edit/${evt.id}`}>
             <a>
               <FaPencilAlt /> Edit Event
             </a>
@@ -31,7 +47,9 @@ export default function EventPage({ evt }) {
           {attributes.time}
         </span>
         <h1>{attributes.name}</h1>
-        {attributes.image && (
+        <ToastContainer />
+
+        {attributes.image.data && (
           <div className={styles.image}>
             <Image
               src={attributes.image.data.attributes.formats.medium.url}
@@ -60,8 +78,6 @@ export const getStaticPaths: GetStaticPaths = async function getStaticPaths() {
   const res = await fetch(`${API_URL}/api/events`)
   const json = await res.json()
   const events = json.data
-
-  // console.log(events)
 
   const paths = events.map(evt => ({
     params: { slug: evt.attributes.slug }
