@@ -5,6 +5,7 @@
       "@/components/*": ["components/*"],
       "@/styles/*": ["styles/*"],
       "@/config/*": ["config/*"],
+      "@/context/*": ["context/*"],
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -21,6 +22,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "context/AuthContext.ts", "pages/account/dashboard.js", "pages/account/login.js", "pages/account/login.js", "pages/account/login.js", "pages/api/login.js"],
   "exclude": ["node_modules"]
 }
